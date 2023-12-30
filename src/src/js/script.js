@@ -1,4 +1,4 @@
-import { Phaser } from "phaser";
+import  Phaser  from "phaser";
 import GameWindow from "./constants.js";
 import Scenes from "./scenes/index.js";
 
@@ -7,12 +7,12 @@ const config = {
   width: GameWindow.width,
   height: GameWindow.height,
   scene: Scenes,
-  physics: {
-    default: "arcade", 
-    arcade: {
-      gravity: { y: 200 },
+physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 0 }
+        }
     },
-  },
 };
 
 const game = new Phaser.Game(config);

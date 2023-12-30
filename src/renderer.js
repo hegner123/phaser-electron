@@ -26,8 +26,8 @@
  * ```
  */
 
-import './index.css';
-import game from './main/js/script.js';
+import './src/style/style.css';
+import game from './src/js/script.js';
 
 
 console.log('👋 This message is being logged by "renderer.js", included via Vite');

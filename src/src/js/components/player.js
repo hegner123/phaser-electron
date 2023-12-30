@@ -8,9 +8,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     x,
     y,
     texture,
-    frame
+    frame,
+    velocity =0
   ) {
-    super(scene, x, y, texture, frame);
+    super(scene, x, y, texture, frame, velocity);
   }
+
 
 }

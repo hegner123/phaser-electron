@@ -8,7 +8,7 @@ export class Level_1_Scene_1 extends Phaser.Scene {
   constructor() {
     super({ key: "Level_1_Scene_1" });
   }
-  PlayerSprite;
+  player;
   levelMap;
   keys;
   keyLeft;
@@ -26,20 +26,20 @@ export class Level_1_Scene_1 extends Phaser.Scene {
     let levelMap;
 
     const map = new URL(
-      "~/src/assets/sprites/Modern_Exteriors_Complete_Tileset.png",
+      "assets/sprites/Modern_Exteriors_Complete_Tileset.png",
       import.meta.url
     );
     const mapTerrainCSV = new URL(
-      "~/src/assets/sprites/phaser-test_Terrain.csv",
+      "assets/sprites/phaser-test_Terrain.csv",
       import.meta.url
     );
     const mapBuildingsCSV = new URL(
-      "~/src/assets/sprites/phaser-test_Buildings.csv",
+      "assets/sprites/phaser-test_Buildings.csv",
       import.meta.url
     );
 
     const playerSpriteSheet = new URL(
-      "~/src/assets/sprites/character_spriteSheet.png",
+      "assets/sprites/character_spriteSheet.png",
       import.meta.url
     );
 
@@ -84,10 +84,12 @@ export class Level_1_Scene_1 extends Phaser.Scene {
     terrainLayer.setScale(2);
     buildingLayer.setScale(2);
 
-    this.physics.add.collider(this.PlayerSprite, this.buildingsLayerMap);
+    
     this.debugGraphics = this.add.graphics();
 
-    this.PlayerSprite = new Player(this, 100, 100, "playerSprite");
+    this.player = this.physics.add.sprite(100, 100, "playerSprite",1);
+    this.physics.add.collider(this.player, this.buildingsLayerMap);
+   
 
     this.keys = this.input.keyboard?.addKeys(
       "RIGHT, LEFT, UP, DOWN",
@@ -167,57 +169,61 @@ export class Level_1_Scene_1 extends Phaser.Scene {
       frameRate: 10,
       repeat: -1,
     });
-    this.physics.add.collider(this.PlayerSprite, buildingLayer);
-    this.add.existing(this.PlayerSprite);
+    this.add.existing(this.player);
+    this.physics.add.collider(this.player, buildingLayer);
     this.cameras.main.setBounds(
       0,
       0,
       this.terrainLayerMap.widthInPixels,
       this.terrainLayerMap.heightInPixels
     );
-    this.cameras.main.startFollow(this.PlayerSprite);
+    this.cameras.main.startFollow(this.player);
   }
   update(time, delta) {
     this.keyRight = this.keys.RIGHT.isDown;
     this.keyLeft = this.keys.LEFT.isDown;
     this.keyUp = this.keys.UP.isDown;
     this.keyDown = this.keys.DOWN.isDown;
-    this.PlayerSprite.setVelocity(0);
+
+    this.player.setVelocity(0);
+
     if (this.keyRight) {
-      this.PlayerSprite.setVelocityX(100);
-      this.PlayerSprite.anims.play("walkRight", true);
-      this.drawDebug();
+      this.player.setVelocityX(100);
+      this.player.anims.play("walkRight", true);
+      
     }
     if (this.keyLeft) {
-      this.PlayerSprite.setVelocityX(-100);
-      this.PlayerSprite.anims.play("walkLeft", true);
+      this.player.setVelocityX(-100);
+      this.player.anims.play("walkLeft", true);
     }
     if (this.keyUp) {
-      this.PlayerSprite.setVelocityY(-100);
-      this.PlayerSprite.anims.play("walkUp", true);
+      this.player.setVelocityY(-100);
+      this.player.anims.play("walkUp", true);
     }
     if (this.keyDown) {
-      this.PlayerSprite.setVelocityY(100);
-      this.PlayerSprite.anims.play("walkDown", true);
+      this.player.body.setVelocityY(100);
+      this.player.anims.play("walkDown", true);
     }
+  
 
     if (!this.keyRight && !this.keyLeft && !this.keyUp && !this.keyDown) {
       switch (this.keys.RIGHT.plugin.prevCode) {
         case keyCodes.right:
-          this.PlayerSprite.anims.play("idleRight", true);
+          this.player.anims.play("idleRight", true);
           break;
         case keyCodes.left:
-          this.PlayerSprite.anims.play("idleLeft", true);
+          this.player.anims.play("idleLeft", true);
           break;
         case keyCodes.up:
-          this.PlayerSprite.anims.play("idleUp", true);
+          this.player.anims.play("idleUp", true);
           break;
         case keyCodes.down:
-          this.PlayerSprite.anims.play("idleDown", true);
+          this.player.anims.play("idleDown", true);
           break;
         default:
           break;
-      }
+      
+    }
     }
   }
 
