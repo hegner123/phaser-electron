@@ -30,4 +30,10 @@ import './src/style/style.css';
 import game from './src/js/script.js';
 
 
+window.electronAPI.onUpdateWindowBounds((value)=>{
+console.log(game)
+game.renderer.resize(value.width, value.height)
+})
+
+
 console.log('👋 This message is being logged by "renderer.js", included via Vite');
